@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        $(function (){
+            $.ajax({
+                url: '/wallet',
+                type: 'POST',
+                success: function (response){
+                    $('#private_key').val(response['private_key']);
+                    $('#public_key').val(response['public_key']);
+                    $('#blockchain_address').val(response['blockchain_address']);
+                    console.info(response)
+                },
+                error: function (error){
+                    console.error(error);
+                }
+            })
+            $('#send_money_button').click(function (){
+                let confirm_text = 'Are you sure to send???'
+                let confirm_result = confirm(confirm_text)
+                if (confirm_result !== true){
+                    alert('canceled');
+                }
+
+                let transaction_data = {
+                    'sender_public_key': $('#public_key').val(),
+                    'sender_private_key': $('#private_key').val(),
+                    'sender_blockchain_address': $('#blockchain_address').val(),
+                    'recipient_blockchain_address': $('#recipient_blockchain_address').val(),
+                    'value': $('#send_money_amount').val()
+                };
+
+                $.ajax({
+                    url: 'transaction',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(transaction_data),
+                    success: function (response){
+                        alert('send success')
+                    },
+                    error: function (response) {
+                        alert('send failed')
+                    }
+                })
+            })
+
+            function reload_amount(){
+                alert('you write code which do function after push reload button')
+            }
+
+            $('#reload_wallet').click(function (){
+                reload_amount()
+            })
+
+        })
+
+    </script>
+
+</head>
+<body>
+<div>
+
+    <h1>Wallet</h1>
+    <div id="wallet_amount">0</div>
+    <button id="reload_wallet">Reload wallet</button>
+
+    <p>Public Key</p>
+    <textarea id="public_key" cols="120" rows="2"></textarea>
+
+    <p>Private Key</p>
+    <textarea id="private_key" cols="120" rows="2"></textarea>
+
+    <p>Blockchain Address</p>
+    <textarea id="blockchain_address" cols="120" rows="2"></textarea>
+
+</div>
+<div>
+
+    <h1>Send Money</h1>
+    <div>
+        Address: <input id="recipient_blockchain_address" size="120" type="text"><br>
+
+        Amount: <input id="send_money_amount" size="10" type="text"><br>
+
+        <button id="send_money_button">Send</button>
+    </div>
+
+</div>
+
+</body>
+</html>
