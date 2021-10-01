@@ -18,6 +18,11 @@ logger = logging.getLogger(__name__)
 
 
 class BlockChain(object):
+    """Creating Blockchain 
+    
+    
+    
+    """
 
     def __init__(self, blockchain_address=None, port=None):
         self.transaction_pool = []
@@ -44,6 +49,11 @@ class BlockChain(object):
 
     def add_transaction(self, sender_blockchain_address,
                         recipient_blockchain_address, value, sender_public_key=None, signature=None):
+        
+        """取引情報を追加する関数
+        
+        
+        """
 
         transaction = utils.sorted_dict_by_key({
             'sender_blockchain_address': sender_blockchain_address,
