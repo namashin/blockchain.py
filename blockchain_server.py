@@ -58,7 +58,7 @@ def transaction():
             'value'
         }
 
-        if not all(key in request_json for key in required):
+        if not all(key in request_json for key in required):　# 上記のewquiredが欠けていないかチェック
             return jsonify({'message': 'missing values'}), 400
 
         is_created = block_chain.create_transaction(
@@ -76,6 +76,8 @@ def transaction():
 
 @app.route('/mine', methods=['GET'])
 def mine():
+    """ /mine　とURLとたたいた時に行う処理 """
+    
     block_chain = get_blockchain()
     is_mined = block_chain.mining()
 
@@ -85,6 +87,7 @@ def mine():
 
 
 if __name__ == '__main__':
+    """ コマンドから引数自分で設定できるように"""
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
